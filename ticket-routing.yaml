@@ -1,0 +1,7 @@
+# ticket component/product -> repo(s) to search
+# Add mappings as you learn which repo owns which support-ticket component.
+# Example:
+# billing:        [org/billing-service]
+# auth:           [org/identity, org/session-gateway]
+# web-dashboard:  [org/web]
+# mobile:         [org/ios-app, org/android-app]
