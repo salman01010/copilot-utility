@@ -1,10 +1,15 @@
 # copilot-utility
 
-Support-ticket triage agent for GitHub Copilot CLI. Type `triage <TICKET-ID>` in a
-Copilot CLI session launched from this folder — the agent pulls the ticket from JIRA,
-searches for prior-art fixes, routes to the right repo, and proposes a fix.
+Support-ticket triage agent, available two ways:
+- **GitHub Copilot CLI** — type `triage <TICKET-ID>` in a Copilot CLI session launched
+  from this folder.
+- **VS Code** — open this folder, pick **Bug Triage** from the Copilot Chat agent
+  picker, type `triage <TICKET-ID>`.
 
-## Setup
+Both pull the ticket from JIRA, search for prior-art fixes, route to the right repo,
+and propose a fix.
+
+## Setup — Copilot CLI
 
 1. Install Copilot CLI (`npm i -g @github/copilot` or your org's distribution).
 2. Wire the MCP servers in `mcp-config.json` (point Copilot CLI at this file, or use
@@ -15,6 +20,15 @@ searches for prior-art fixes, routes to the right repo, and proposes a fix.
 5. Confirm your GitHub token/app scopes cover every repo you want searched — unscoped
    repos silently drop out of search results.
 
+## Setup — VS Code
+
+1. Install/update the GitHub Copilot Chat extension (needs custom-agent support).
+2. Open this folder in VS Code. `.vscode/mcp.json` is auto-detected — click **Start**
+   on the Atlassian and GitHub servers when prompted, then sign in via OAuth.
+3. Open Copilot Chat, select **Bug Triage** from the agent/mode picker (reads
+   `.github/agents/bug-triage.agent.md`).
+4. Fill in `ticket-routing.yaml` with your component → repo mappings as you learn them.
+
 ## Usage
 
 ```
@@ -23,16 +37,20 @@ $ copilot
 > triage PROJ-1234
 ```
 
-The agent reads `AGENTS.md` for the procedure and `ticket-routing.yaml` for repo
-routing, then returns: similar past cases, suspected repo/location, root cause,
-proposed fix, and a confidence rating.
+or in VS Code Copilot Chat, with **Bug Triage** selected: `triage PROJ-1234`.
+
+The agent reads its procedure (`AGENTS.md` for CLI, `bug-triage.agent.md` for VS Code)
+and `ticket-routing.yaml` for repo routing, then returns: similar past cases, suspected
+repo/location, root cause, proposed fix, and a confidence rating.
 
 ## Files
 
-- `AGENTS.md` — the triage procedure Copilot CLI follows.
+- `AGENTS.md` — the triage procedure GitHub Copilot CLI follows.
+- `.github/agents/bug-triage.agent.md` — the same procedure as a VS Code custom agent.
 - `ticket-routing.yaml` — component → repo routing map (fallback when prior-art
   search doesn't surface a repo).
-- `mcp-config.json` — Atlassian (JIRA) + GitHub MCP server config.
+- `mcp-config.json` — Atlassian (JIRA) + GitHub MCP server config for Copilot CLI.
+- `.vscode/mcp.json` — same MCP servers, VS Code format (`servers` key, not `mcpServers`).
 
 ## Notes
 
